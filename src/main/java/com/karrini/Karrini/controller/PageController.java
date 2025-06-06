@@ -2,9 +2,11 @@ package com.karrini.Karrini.controller;
 
 import com.karrini.Karrini.model.Category;
 import com.karrini.Karrini.model.Course;
+import com.karrini.Karrini.model.Instructor;
 import com.karrini.Karrini.model.User;
 import com.karrini.Karrini.repository.CategoryRepository;
 import com.karrini.Karrini.repository.CourseRepository;
+import com.karrini.Karrini.repository.InstructorRepository;
 import com.karrini.Karrini.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +19,12 @@ public class PageController {
 
     private final CategoryRepository categoryRepository;
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
+    private final InstructorRepository instructorRepository;
 
-    public PageController(CategoryRepository categoryRepository, CourseRepository courseRepository, UserRepository userRepository) {
+    public PageController(CategoryRepository categoryRepository, CourseRepository courseRepository, InstructorRepository instructorRepository) {
         this.categoryRepository = categoryRepository;
         this.courseRepository = courseRepository;
-        this.userRepository = userRepository;
+        this.instructorRepository = instructorRepository;
     }
 
     @GetMapping("/")
@@ -33,7 +35,7 @@ public class PageController {
         List<Course> courseList = courseRepository.findAll();
         courseList = courseList.subList(0, 6);
         model.addAttribute("courses", courseList);
-        List<User> instructorList = userRepository.findAll();
+        List<Instructor> instructorList = instructorRepository.findAll();
         instructorList = instructorList.subList(0, 4);
         model.addAttribute("instructors", instructorList);
         return "index";
