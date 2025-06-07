@@ -2,6 +2,9 @@ package com.karrini.Karrini.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Course {
 
@@ -18,26 +21,32 @@ public class Course {
     private Integer learnerCount = 0;
     private Integer reviewCount = 0;
     private Integer starsCount = 0;
+    @Enumerated(EnumType.STRING)
+    private Level level;
     private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lecture> lectures = new ArrayList<Lecture>();
 
     public Course() {
     }
 
-    public Course(Long id, String name, String description, User instructor, String duration, Double price, Integer learnerCount, Integer reviewCount, Integer starsCount, String imageUrl, Category category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.instructor = instructor;
-        this.duration = duration;
-        this.price = price;
-        this.learnerCount = learnerCount;
-        this.reviewCount = reviewCount;
-        this.starsCount = starsCount;
-        this.imageUrl = imageUrl;
-        this.category = category;
+    public List<Lecture> getLectures() {
+        return lectures;
+    }
+
+    public void setLectures(List<Lecture> lectures) {
+        this.lectures = lectures;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 
     public Long getId() {
