@@ -1,18 +1,11 @@
 package com.karrini.Karrini.controller;
 
-import com.karrini.Karrini.model.Category;
-import com.karrini.Karrini.model.Course;
-import com.karrini.Karrini.model.Instructor;
-import com.karrini.Karrini.model.User;
 import com.karrini.Karrini.repository.CategoryRepository;
 import com.karrini.Karrini.repository.CourseRepository;
 import com.karrini.Karrini.repository.InstructorRepository;
-import com.karrini.Karrini.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 @Controller
 public class PageController {
@@ -29,17 +22,12 @@ public class PageController {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Category> categoryList = categoryRepository.findAll();
-        categoryList = categoryList.subList(0, 6);
-        model.addAttribute("categoris", categoryList);
-        List<Course> courseList = courseRepository.findAll();
-        courseList = courseList.subList(0, 6);
-        model.addAttribute("courses", courseList);
-        List<Instructor> instructorList = instructorRepository.findAll();
-        instructorList = instructorList.subList(0, 4);
-        model.addAttribute("instructors", instructorList);
+        model.addAttribute("categories", categoryRepository.findTop6ByOrderByIdAsc());
+        model.addAttribute("courses", courseRepository.findTop6ByOrderByIdAsc());
+        model.addAttribute("instructors", instructorRepository.findTop4ByOrderByIdAsc());
         return "index";
     }
+
 
     @GetMapping("/about")
     public String about() {
@@ -69,5 +57,14 @@ public class PageController {
     @GetMapping("/testimonial")
     public String testimonial() {
         return "testimonial";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+    @GetMapping("/signup")
+    public String signup(){
+        return "signup";
     }
 }

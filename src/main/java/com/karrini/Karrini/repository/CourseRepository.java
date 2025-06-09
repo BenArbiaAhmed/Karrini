@@ -4,9 +4,13 @@ import java.util.List;
 
 import com.karrini.Karrini.model.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
     List<Course> findByName(String name);
     Course findById(long id);
+    List<Course> findTop6ByOrderByIdAsc();
 }

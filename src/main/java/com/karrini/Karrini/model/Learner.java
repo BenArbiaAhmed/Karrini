@@ -13,10 +13,6 @@ public class Learner extends User {
     @OneToMany(mappedBy = "learner", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Enrollment> enrollments = new HashSet<>();
 
-    public Learner(Long id, String firstName, String lastName, String email, String password, Role role, Set<Enrollment> enrollments) {
-        super(id, firstName, lastName, email, password, role);
-        this.enrollments = enrollments;
-    }
 
     public Learner(Set<Enrollment> enrollments) {
         this.enrollments = enrollments;
