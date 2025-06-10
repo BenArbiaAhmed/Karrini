@@ -16,23 +16,39 @@
 
                                 <form action="signup" method="POST" class="mx-1 mx-md-4">
 
-                                    <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="d-flex flex-row align-items-center mb-2">
                                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                         <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                            <label class="form-label" for="username">Your Username</label>
+                                            <label class="form-label" for="firstname">Firstname</label>
+                                            <input type="text" id="firstname" name="firstname" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-2">
+                                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                            <label class="form-label" for="lastname">Lastname</label>
+                                            <input type="text" id="lastname" name="lastname" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-2">
+                                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                            <label class="form-label" for="username">Username</label>
                                             <input type="text" id="username" name="username" class="form-control" />
                                         </div>
                                     </div>
 
-                                    <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="d-flex flex-row align-items-center mb-2">
                                         <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                         <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                            <label class="form-label" for="email">Your Email</label>
+                                            <label class="form-label" for="email">Email</label>
                                             <input type="email" id="email" name="email" class="form-control" />
                                         </div>
                                     </div>
 
-                                    <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="d-flex flex-row align-items-center mb-2">
                                         <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                         <div data-mdb-input-init class="form-outline flex-fill mb-0">
                                             <label class="form-label" for="password">Password</label>
@@ -90,11 +106,15 @@
     const submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", (event) => {
         event.preventDefault();
+        const firstName = document.getElementById("firstname").value;
+        const lastName = document.getElementById("lastname").value;
         const username = document.getElementById("username").value;
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
         const selectedValue = document.querySelector('input[name="flexRadioDefault"]:checked')?.value;
         const data = {
+            firstName,
+            lastName,
             username,
             email,
             password,

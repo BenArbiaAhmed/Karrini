@@ -147,12 +147,12 @@
             <div class="row g-3">
                 <div class="col">
                     <div class="row g-3">
-                        <div th:each="category: ${categories}" class="col-lg-4 col-md-12 wow zoomIn" data-wow-delay="0.3s">
-                            <a class="position-relative d-block overflow-hidden" href="">
+                        <div th:each="category, iter: ${categories}" class="col-lg-4 col-md-12 wow zoomIn" data-wow-delay="0.3s">
+                            <a class="position-relative d-block overflow-hidden" th:href="@{/category/{id}(id=${category.id})}">
                                 <img class="img-fluid" src="/img/cat-2.jpg" alt="">
                                 <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
                                     <h5 th:text="${category.getName()}" class="m-0"></h5>
-                                    <small class="text-primary">49 Courses</small>
+                                    <small class="text-primary" th:text="${courseCountForEachCategory[iter.index]} + ' Courses'"></small>
                                 </div>
                             </a>
                         </div>
@@ -172,36 +172,12 @@
                 <h1 class="mb-5">Popular Courses</h1>
             </div>
             <div class="row g-4 justify-content-center">
-<!--                <div th:each="course: ${courses}" class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">-->
-<!--                    <div class="course-item bg-light">-->
-<!--                        <div class="position-relative overflow-hidden">-->
-<!--                            <img class="img-fluid" src="/img/course-1.jpg" alt="">-->
-<!--                            <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">-->
-<!--                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>-->
-<!--                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="text-center p-4 pb-0">-->
-<!--                            <h3 th:text="'$' + ${course.price}" class="mb-0"></h3>-->
-<!--                            <div class="mb-3">-->
-<!--                                <small th:each="i : ${#numbers.sequence(1,  5)}" class="fa fa-star text-primary"></small>-->
-<!--                                <small th:text="${course.getReviewCount()}"></small>-->
-<!--                            </div>-->
-<!--                            <h5 th:text="${course.getName()}" class="mb-4"></h5>-->
-<!--                        </div>-->
-<!--                        <div class="d-flex border-top">-->
-<!--                            <small th:text="${course.getInstructor().getFirstName()} +' '+ ${course.getInstructor().getLastName()}" class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i></small>-->
-<!--                            <small th:text="${course.getDuration()}" class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i></small>-->
-<!--                            <small th:text="${course.getLearnerCount()} + 'Students'" class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i></small>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div th:each="course : ${courses}" class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="course-item bg-light">
                         <div class="position-relative overflow-hidden">
                             <img class="img-fluid" src="/img/course-1.jpg" alt="">
                             <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
+                                <a th:href="@{/course/{id}(id=${course.getId()})}" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
                                 <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
                             </div>
                         </div>

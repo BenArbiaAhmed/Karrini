@@ -33,6 +33,7 @@ public class Course {
     public Course() {
     }
 
+
     public List<Lecture> getLectures() {
         return lectures;
     }

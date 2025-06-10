@@ -1,11 +1,17 @@
 package com.karrini.Karrini.controller;
 
+import com.karrini.Karrini.model.Category;
+import com.karrini.Karrini.model.Course;
 import com.karrini.Karrini.repository.CategoryRepository;
 import com.karrini.Karrini.repository.CourseRepository;
 import com.karrini.Karrini.repository.InstructorRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class PageController {
@@ -22,9 +28,15 @@ public class PageController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("categories", categoryRepository.findTop6ByOrderByIdAsc());
+        List<Category> categoryList = categoryRepository.findTop6ByOrderByIdAsc();
+        model.addAttribute("categories", categoryList);
         model.addAttribute("courses", courseRepository.findTop6ByOrderByIdAsc());
         model.addAttribute("instructors", instructorRepository.findTop4ByOrderByIdAsc());
+        List<Long> courseCountForEachCategory = new ArrayList<Long>();
+        for(Category category: categoryList){
+            courseCountForEachCategory.add(courseRepository.countByCategory(category));
+        }
+        model.addAttribute("courseCountForEachCategory", courseCountForEachCategory);
         return "index";
     }
 
@@ -45,7 +57,15 @@ public class PageController {
     }
 
     @GetMapping("/courses")
-    public String courses() {
+    public String courses(Model model) {
+        List<Category> categoryList = categoryRepository.findTop6ByOrderByIdAsc();
+        List<Long> courseCountForEachCategory = new ArrayList<Long>();
+        for(Category category: categoryList){
+            courseCountForEachCategory.add(courseRepository.countByCategory(category));
+        }
+        model.addAttribute("categories", categoryList);
+        model.addAttribute("courses", courseRepository.findTop9ByOrderByLearnerCountDesc());
+        model.addAttribute("courseCountForEachCategory", courseCountForEachCategory);
         return "courses";
     }
 
@@ -66,5 +86,22 @@ public class PageController {
     @GetMapping("/signup")
     public String signup(){
         return "signup";
+    }
+
+    @GetMapping("/category/{id}")
+    public String categoryByIdCourses(@PathVariable Long id, Model model){
+        model.addAttribute("courses", courseRepository.findCourseByCategory_Id(id));
+        return "categoryCourses";
+    }
+    @GetMapping("/course/{id}")
+    public String course(@PathVariable Long id, Model model){
+        if(courseRepository.findById(id).isPresent()) {
+            Course course = courseRepository.findById(id).get();
+            model.addAttribute("course", course);
+            model.addAttribute("starCount", course.getStarsCount());
+            return "courseDetails";
+        }else{
+            return "error/404";
+        }
     }
 }

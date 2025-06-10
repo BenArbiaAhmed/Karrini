@@ -7,12 +7,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-
     private Long id;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     private String name;
     private String description;
@@ -29,6 +24,10 @@ public class Category {
         this.description = description;
         this.imageUrl = imageUrl;
         this.isActive = isActive;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
