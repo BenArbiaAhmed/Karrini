@@ -18,20 +18,14 @@ public class Enrollment {
 
     private LocalDateTime enrollmentDate;
 
-    private int progress;
+    private int progress = 0;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ACTIVE;
 
     public Enrollment() {
     }
 
-    public Enrollment(Learner learner, Course course) {
-        this.learner = learner;
-        this.course = course;
-        this.progress = 0;
-        this.status = Status.ACTIVE;
-    }
 
     public Long getId() {
         return id;

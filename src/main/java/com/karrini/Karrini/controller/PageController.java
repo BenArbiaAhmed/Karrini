@@ -5,6 +5,7 @@ import com.karrini.Karrini.model.Course;
 import com.karrini.Karrini.repository.CategoryRepository;
 import com.karrini.Karrini.repository.CourseRepository;
 import com.karrini.Karrini.repository.InstructorRepository;
+import com.karrini.Karrini.service.PageDataService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,25 +19,20 @@ public class PageController {
 
     private final CategoryRepository categoryRepository;
     private final CourseRepository courseRepository;
-    private final InstructorRepository instructorRepository;
+    private PageDataService pageDataService;
 
-    public PageController(CategoryRepository categoryRepository, CourseRepository courseRepository, InstructorRepository instructorRepository) {
+    public PageController(CategoryRepository categoryRepository, CourseRepository courseRepository, PageDataService pageDataService) {
         this.categoryRepository = categoryRepository;
         this.courseRepository = courseRepository;
-        this.instructorRepository = instructorRepository;
+        this.pageDataService = pageDataService;
     }
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Category> categoryList = categoryRepository.findTop6ByOrderByIdAsc();
-        model.addAttribute("categories", categoryList);
-        model.addAttribute("courses", courseRepository.findTop6ByOrderByIdAsc());
-        model.addAttribute("instructors", instructorRepository.findTop4ByOrderByIdAsc());
-        List<Long> courseCountForEachCategory = new ArrayList<Long>();
-        for(Category category: categoryList){
-            courseCountForEachCategory.add(courseRepository.countByCategory(category));
-        }
-        model.addAttribute("courseCountForEachCategory", courseCountForEachCategory);
+        model.addAttribute("categories", pageDataService.getHomePageData().get("categoryList"));
+        model.addAttribute("courses", pageDataService.getHomePageData().get("courses"));
+        model.addAttribute("instructors", pageDataService.getHomePageData().get("instructors"));
+        model.addAttribute("courseCountForEachCategory", pageDataService.getHomePageData().get("courseCountForEachCategory"));
         return "index";
     }
 
@@ -48,7 +44,7 @@ public class PageController {
 
     @GetMapping("/404")
     public String pageNotFound() {
-        return "404";
+        return "error/404";
     }
 
     @GetMapping("/contact")
@@ -58,14 +54,9 @@ public class PageController {
 
     @GetMapping("/courses")
     public String courses(Model model) {
-        List<Category> categoryList = categoryRepository.findTop6ByOrderByIdAsc();
-        List<Long> courseCountForEachCategory = new ArrayList<Long>();
-        for(Category category: categoryList){
-            courseCountForEachCategory.add(courseRepository.countByCategory(category));
-        }
-        model.addAttribute("categories", categoryList);
-        model.addAttribute("courses", courseRepository.findTop9ByOrderByLearnerCountDesc());
-        model.addAttribute("courseCountForEachCategory", courseCountForEachCategory);
+        model.addAttribute("categories", pageDataService.getCoursesPageData().get("categories"));
+        model.addAttribute("courses", pageDataService.getCoursesPageData().get("courses"));
+        model.addAttribute("courseCountForEachCategory", pageDataService.getCoursesPageData().get("courseCountForEachCategory"));
         return "courses";
     }
 
@@ -103,5 +94,10 @@ public class PageController {
         }else{
             return "error/404";
         }
+    }
+
+    @GetMapping("/learn/course/{id}")
+    public String learn(@PathVariable Long id){
+        return "courseLearningPage";
     }
 }
