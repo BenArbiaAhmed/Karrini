@@ -10,21 +10,22 @@ public class Lecture {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String title;
     private String description;
+    private Integer displayOrder;
     private String duration;
     @ManyToOne
     private Course course;
-    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LearningMaterial> material = new ArrayList<LearningMaterial>();
+    @OneToOne(mappedBy = "lecture", cascade = CascadeType.ALL, orphanRemoval = true)
+    private LearningMaterial material;
 
-    public List<LearningMaterial> getMaterial() {
+    public LearningMaterial getMaterial() {
         return material;
     }
 
-    public void setMaterial(List<LearningMaterial> material) {
+    public void setMaterial(LearningMaterial material) {
         this.material = material;
     }
 
@@ -70,5 +71,13 @@ public class Lecture {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
     }
 }

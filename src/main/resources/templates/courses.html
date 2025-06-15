@@ -51,11 +51,14 @@
                         <img class="img-fluid" src="/img/course-1.jpg" alt="">
                         <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
                             <a th:href="@{/course/{id}(id=${course.getId()})}" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                            <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
+                            <form th:action="@{/enroll}" method="post">
+                                <input type="hidden" name="courseId" th:value="${course.getId()}" />
+                                <button type="submit" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Enroll Now</button>
+                            </form>
                         </div>
                     </div>
                     <div class="text-center p-4 pb-0">
-                        <h3 class="mb-0" th:text="'$' + ${course.price}"></h3>
+                        <h3 class="mb-0" th:text="'$' + ${course.getPrice()}"></h3>
                         <div class="mb-3">
                             <small th:each="i : ${#numbers.sequence(1, 5)}" class="fa fa-star text-primary"></small>
                             <small><span th:text="${course.getReviewCount()}"></span></small>

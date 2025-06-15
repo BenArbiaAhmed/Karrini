@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LearnerRepository extends JpaRepository<Learner, Long> {
     Learner findById(long id);
+    Learner findByUsername(String username);
+    Learner findByEmail(String email);
 }

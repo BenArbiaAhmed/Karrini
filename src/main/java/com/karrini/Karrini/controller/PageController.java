@@ -1,18 +1,19 @@
 package com.karrini.Karrini.controller;
 
-import com.karrini.Karrini.model.Category;
+import com.karrini.Karrini.exception.CourseNotFoundException;
 import com.karrini.Karrini.model.Course;
+import com.karrini.Karrini.model.Lecture;
 import com.karrini.Karrini.repository.CategoryRepository;
 import com.karrini.Karrini.repository.CourseRepository;
-import com.karrini.Karrini.repository.InstructorRepository;
 import com.karrini.Karrini.service.PageDataService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PageController {
@@ -82,7 +83,7 @@ public class PageController {
     @GetMapping("/category/{id}")
     public String categoryByIdCourses(@PathVariable Long id, Model model){
         model.addAttribute("courses", courseRepository.findCourseByCategory_Id(id));
-        return "categoryCourses";
+        return "courses-by-category";
     }
     @GetMapping("/course/{id}")
     public String course(@PathVariable Long id, Model model){
@@ -90,14 +91,9 @@ public class PageController {
             Course course = courseRepository.findById(id).get();
             model.addAttribute("course", course);
             model.addAttribute("starCount", course.getStarsCount());
-            return "courseDetails";
+            return "course-details";
         }else{
             return "error/404";
         }
-    }
-
-    @GetMapping("/learn/course/{id}")
-    public String learn(@PathVariable Long id){
-        return "courseLearningPage";
     }
 }

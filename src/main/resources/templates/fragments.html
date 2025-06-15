@@ -97,6 +97,23 @@
 </div>
 <!-- Header End -->
 
+<div th:fragment="lecture(materialType, material)">
+    <div th:if="${materialType == 'text'}">
+        <p th:text=""></p>
+    </div>
+    <div th:if="${materialType == 'video'}">
+        <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/fH3QUXXKr4Y"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
+
+    </div>
+
+</div>
+
 
 <!-- Footer Start -->
 <div th:fragment="footer" class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">

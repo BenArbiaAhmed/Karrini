@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
     Lecture getLectureById(Long id);
+    Lecture getLectureByCourse_IdAndDisplayOrder(Long courseId, Integer displayOrder);
 }

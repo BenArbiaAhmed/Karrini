@@ -4,7 +4,6 @@ package com.karrini.Karrini.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,6 @@ public class Instructor extends User{
     private List <Course> courses = new ArrayList<>();
 
     public Instructor() {
-        super();
-        this.setRole(Role.ROLE_INSTRUCTOR);
     }
 
     public String getFacebookUrl() {

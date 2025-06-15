@@ -5,9 +5,10 @@
 <body>
     <div th:replace="fragments :: spinner"></div>
     <div th:replace="fragments :: navbar"></div>
-    <div sec:authorize="isAuthenticated()">
-        Welcome, authenticated user!
-    </div>
+<!--    <div sec:authorize="isAuthenticated()">-->
+<!--        Welcome, authenticated user!-->
+<!--    </div>-->
+    <div class="alert alert-danger" role="alert" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
     <!-- Carousel Start -->
     <div class="container-fluid p-0 mb-5">
@@ -178,9 +179,8 @@
                             <img class="img-fluid" src="/img/course-1.jpg" alt="">
                             <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
                                 <a th:href="@{/course/{id}(id=${course.getId()})}" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
                                 <form th:action="@{/enroll}" method="post">
-                                    <input type="hidden" name="courseId" th:value="${course.id}" />
+                                    <input type="hidden" name="courseId" th:value="${course.getId()}" />
                                     <button type="submit" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Enroll Now</button>
                                 </form>
                             </div>

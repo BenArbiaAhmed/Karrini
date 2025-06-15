@@ -1,18 +1,17 @@
 package com.karrini.Karrini.controller;
 
 
-import com.karrini.Karrini.dto.EnrollmentRequest;
+import com.karrini.Karrini.exception.LeanerAlreadyEnrolledException;
 import com.karrini.Karrini.model.Enrollment;
-import com.karrini.Karrini.repository.EnrollmentRepository;
 import com.karrini.Karrini.service.EnrollmentService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
-@RestController
-@RequestMapping
+@Controller
 public class EnrollmentController {
 
 
@@ -23,15 +22,18 @@ public class EnrollmentController {
     }
 
     @PostMapping("/enroll")
-    public String enroll(@RequestBody EnrollmentRequest enrollmentRequest, @AuthenticationPrincipal UserDetails userDetails){
-        Long courseId = enrollmentRequest.getCourseId();
-        String username = userDetails.getUsername();
+    public RedirectView enroll(@RequestParam Long courseId, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes attributes){
+        String email = userDetails.getUsername();
         try {
-            Enrollment enrollment = enrollmentService.enrollUserInCourse(username, courseId);
-            return "redirect:/learn/course/" + courseId;
+            Enrollment enrollment = enrollmentService.enrollUserInCourse(email, courseId);
+            return new RedirectView("/learn/course/" + courseId + "/lecture/1");
+        } catch (LeanerAlreadyEnrolledException laee){
+            attributes.addFlashAttribute("errorMessage", "You are already enrolled.");
+            return new RedirectView("/");
         }
         catch (RuntimeException e){
-            return "redirect:/";
+            attributes.addFlashAttribute("errorMessage", "Enrollment Failed");
+            return new RedirectView("/");
         }
     }
 }
