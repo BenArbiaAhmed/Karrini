@@ -6,6 +6,8 @@ import com.karrini.Karrini.model.Lecture;
 import com.karrini.Karrini.repository.CategoryRepository;
 import com.karrini.Karrini.repository.CourseRepository;
 import com.karrini.Karrini.service.PageDataService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -95,5 +98,13 @@ public class PageController {
         }else{
             return "error/404";
         }
+    }
+
+    @GetMapping("/mycourses")
+    public String mycourses(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        Map<String, List<Course>> data = pageDataService.getMyCoursesPageData(userDetails);
+        List<Course> enrolledCourses = data.get("enrolledCourses");
+        model.addAttribute("enrolledCourses", enrolledCourses);
+        return "my-courses";
     }
 }

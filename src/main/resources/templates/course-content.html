@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<div th:replace="fragments :: head(Courses)"></div>
+<div th:replace="fragments/head.html :: head(Courses)"></div>
 
 <body>
-<div th:replace="fragments :: spinner"></div>
-<div th:replace="fragments :: navbar"></div>
+<div th:replace="fragments/spinner.html :: spinner"></div>
+<div th:replace="fragments/navbar.html :: navbar"></div>
 <div style="display: flex; flex-direction: row; align-items: center;">
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none mt-2">
@@ -14,18 +14,32 @@
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
             <li th:each="lecture: ${lectures}">
-                <a href="#" class="nav-link link-dark" th:text="${lecture.getTitle()}">
-                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+                <a th:href="@{/learn/course/{courseId}/lecture/{displayOrder}(courseId=${course.getId()}, displayOrder=${lecture.getDisplayOrder()})}"
+                   class="nav-link link-dark"
+                   th:text="${lecture.getTitle()}">
                 </a>
             </li>
         </ul>
         <hr>
     </div>
-    <div th:replace="~{fragments :: lecture(materialType=${materialType}, material=${material})}"></div>
+    <div class="ms-5">
+        <div th:if="${materialType == 'TEXT'}">
+            <p th:text="${textContent}"></p>
+        </div>
+        <div th:if="${materialType == 'VIDEO'}">
+            <iframe width="560" height="315"
+                    src="https://www.youtube.com/embed/fH3QUXXKr4Y"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+            </iframe>
+        </div>
+    </div>
 </div>
 
 
-<div th:replace="fragments :: footer"></div>
+<div th:replace="fragments/footer.html :: footer"></div>
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 <!-- JavaScript Libraries -->

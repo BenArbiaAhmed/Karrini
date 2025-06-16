@@ -1,54 +1,47 @@
 package com.karrini.Karrini.controller;
 
 
-import com.karrini.Karrini.exception.CourseNotFoundException;
-import com.karrini.Karrini.model.Course;
+import com.karrini.Karrini.dto.CourseContentDto;
 import com.karrini.Karrini.model.LearningMaterial;
-import com.karrini.Karrini.model.Lecture;
-import com.karrini.Karrini.model.MaterialType;
-import com.karrini.Karrini.repository.CourseRepository;
-import com.karrini.Karrini.repository.LectureRepository;
+import com.karrini.Karrini.model.TextMaterial;
+import com.karrini.Karrini.model.VideoMaterial;
+import com.karrini.Karrini.service.CourseService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-import java.util.Optional;
 
 @Controller
+@RequestMapping("/learn")
 public class CourseController {
 
-    private final CourseRepository courseRepository;
-    private final LectureRepository lectureRepository;
+    private final CourseService courseService;
 
-    public CourseController(CourseRepository courseRepository, LectureRepository lectureRepository) {
-        this.courseRepository = courseRepository;
-        this.lectureRepository = lectureRepository;
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
     }
 
-    @GetMapping("/learn/course/{courseId}/lecture/{displayOrder}")
-    public String learn(@PathVariable Long courseId, @PathVariable Integer displayOrder, Model model) {
-        Optional<Course> course = courseRepository.findById(courseId);
-        if (course.isPresent()) {
-            model.addAttribute("course", course.get());
-            Course courseObj = course.get();
-            List<Lecture> lectures = courseObj.getLectures();
-            Lecture currentLecture = lectureRepository.getLectureByCourse_IdAndDisplayOrder(courseId, displayOrder);
-            model.addAttribute("lectures", lectures);
-            LearningMaterial learningMaterial = currentLecture.getMaterial();
-            if (learningMaterial.getMaterialType() == MaterialType.TEXT) {
-                model.addAttribute("materialType", "text");
-            } else if (learningMaterial.getMaterialType() == MaterialType.VIDEO) {
-                model.addAttribute("materialType", "video");
-            } else if (learningMaterial.getMaterialType() == MaterialType.QUIZ) {
-                model.addAttribute("materialType", "quiz");
-            }
-            model.addAttribute("material", learningMaterial);
-            return "course-content";
+    @GetMapping(value = "/course/{courseId}/lecture/{displayOrder}")
+    public String learn(@PathVariable Long courseId,
+                        @PathVariable Integer displayOrder,
+                        @AuthenticationPrincipal UserDetails userDetails,
+                        Model model) {
+        CourseContentDto content = courseService.getCourseContent(courseId, displayOrder, userDetails);
+
+        model.addAttribute("course", content.getCourse());
+        model.addAttribute("lectures", content.getLectures());
+        LearningMaterial material = content.getMaterial();
+        if (material instanceof VideoMaterial video) {
+            model.addAttribute("videoUrl", video.getVideoUrl());
+        } else if (material instanceof TextMaterial text) {
+            model.addAttribute("textContent", text.getContent());
         }
-        else {
-            throw new CourseNotFoundException("Course with id: " + courseId + " is not found.");
-        }
+        model.addAttribute("materialType", content.getMaterialType().toString());
+
+        return "course-content";
     }
 }

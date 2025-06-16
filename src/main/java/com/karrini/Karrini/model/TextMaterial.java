@@ -5,16 +5,16 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class TextMaterial extends LearningMaterial{
-    private String uri;
+    private String content;
     public TextMaterial(){
 
     }
 
-    public String getUri() {
-        return uri;
+    public String getContent() {
+        return content;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setContent(String content) {
+        this.content = content;
     }
 }

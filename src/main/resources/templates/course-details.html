@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<div th:replace="fragments :: head(Courses)"></div>
+<div th:replace="fragments/head.html :: head(Courses)"></div>
 
 <body>
-<div th:replace="fragments :: spinner"></div>
-<div th:replace="fragments :: navbar"></div>
+<div th:replace="fragments/spinner.html :: spinner"></div>
+<div th:replace="fragments/navbar.html :: navbar"></div>
 <div class="container mt-5">
     <div class="row">
         <!-- Product Images -->
@@ -50,7 +50,7 @@
 
 
 
-<div th:replace="fragments :: footer"></div>
+<div th:replace="fragments/footer.html :: footer"></div>
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 <!-- JavaScript Libraries -->

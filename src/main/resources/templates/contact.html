@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<div th:replace="fragments :: head(Contact)"></div>
+<div th:replace="fragments/head.html :: head(Contact)"></div>
 
 <body>
-    <div th:replace="fragments :: spinner"></div>
+    <div th:replace="fragments/spinner.html :: spinner"></div>
 
-    <div th:replace="fragments :: navbar"></div>
+    <div th:replace="fragments/navbar.html :: navbar"></div>
 
-    <div th:replace="fragments :: header(Contact, Contact)"></div>
+    <div th:replace="fragments/header.html :: header(Contact, Contact)"></div>
 
     <!-- Contact Start -->
     <div class="container-xxl py-5">

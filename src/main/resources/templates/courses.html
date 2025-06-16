@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<div th:replace="fragments :: head(Courses)"></div>
+<div th:replace="fragments/head.html :: head(Courses)"></div>
 
 <body>
-   <div th:replace="fragments :: spinner"></div>
+   <div th:replace="fragments/spinner.html :: spinner"></div>
 
 
-    <div th:replace="fragments :: navbar"></div>
+    <div th:replace="fragments/navbar.html :: navbar"></div>
 
-    <div th:replace="fragments :: header(Courses, Courses)"></div>
+    <div th:replace="fragments/header.html :: header(Courses, Courses)"></div>
 
     <!-- Categories Start -->
     <div class="container-xxl py-5 category">
@@ -133,7 +133,7 @@
     <!-- Testimonial End -->
         
 
-    <div th:replace="fragments :: footer"></div>
+    <div th:replace="fragments/footer.html :: footer"></div>
 
 
     <!-- Back to Top -->

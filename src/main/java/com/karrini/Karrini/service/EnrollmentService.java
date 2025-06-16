@@ -38,6 +38,7 @@ public class EnrollmentService {
         enrollment.setLearner(learner);
         enrollment.setEnrollmentDate(LocalDateTime.now());
         course.setLearnerCount(course.getLearnerCount() + 1);
+        courseRepository.save(course);
         Set<Enrollment> enrollments = learner.getEnrollments();
         enrollments.add(enrollment);
         learner.setEnrollments(enrollments);

@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
-<div th:replace="~{fragments :: head('Log in')}"></div>
+<div th:replace="~{fragments/head.html :: head('Log in')}"></div>
 <body>
-<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments/navbar.html :: navbar}"></div>
 <section class="vh-100">
     <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -63,6 +63,6 @@
         </div>
     </div>
 </section>
-<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments/footer.html :: footer}"></div>
 </body>
 </html>

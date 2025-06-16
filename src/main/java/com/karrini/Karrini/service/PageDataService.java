@@ -1,11 +1,8 @@
 package com.karrini.Karrini.service;
 
-import com.karrini.Karrini.model.Category;
-import com.karrini.Karrini.model.Course;
-import com.karrini.Karrini.model.Instructor;
-import com.karrini.Karrini.repository.CategoryRepository;
-import com.karrini.Karrini.repository.CourseRepository;
-import com.karrini.Karrini.repository.InstructorRepository;
+import com.karrini.Karrini.model.*;
+import com.karrini.Karrini.repository.*;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,11 +16,15 @@ public class PageDataService {
     private final CategoryRepository categoryRepository;
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
+    private final EnrollmentRepository enrollmentRepository;
+    private final LearnerRepository learnerRepository;
 
-    public PageDataService(CategoryRepository categoryRepository, CourseRepository courseRepository, InstructorRepository instructorRepository) {
+    public PageDataService(CategoryRepository categoryRepository, CourseRepository courseRepository, InstructorRepository instructorRepository, EnrollmentRepository enrollmentRepository, LearnerRepository learnerRepository) {
         this.categoryRepository = categoryRepository;
         this.courseRepository = courseRepository;
         this.instructorRepository = instructorRepository;
+        this.enrollmentRepository = enrollmentRepository;
+        this.learnerRepository = learnerRepository;
     }
 
 
@@ -60,5 +61,15 @@ public class PageDataService {
         return pageData;
     }
 
-    // You would create similar methods for other pages, like getCoursesPageData()
+    public Map<String, List<Course>> getMyCoursesPageData(UserDetails userDetails) {
+        Map<String, List<Course>> pageData = new HashMap<>();
+        Learner learner = learnerRepository.findByEmail(userDetails.getUsername());
+        List<Enrollment> enrollments = enrollmentRepository.findByLearner(learner);
+        List<Course> enrolledCourses = new ArrayList<>();
+        for(Enrollment enrollment: enrollments){
+            enrolledCourses.add(enrollment.getCourse());
+        }
+        pageData.put("enrolledCourses", enrolledCourses);
+        return pageData;
+    }
 }
