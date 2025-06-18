@@ -1,13 +1,11 @@
 package com.karrini.Karrini.model;
 
-public enum Role {
-    USER,
-    INSTRUCTOR,
-    LEARNER,
-    ADMIN;
+public enum CourseStatus {
+    PENDING,
+    ACCEPTED,
+    REJECTED;
 
     public String getName() {
         return name();
     }
 }
-

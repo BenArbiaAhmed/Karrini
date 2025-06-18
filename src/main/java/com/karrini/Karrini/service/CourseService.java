@@ -10,9 +10,12 @@ import com.karrini.Karrini.model.Lecture;
 import com.karrini.Karrini.repository.CourseRepository;
 import com.karrini.Karrini.repository.EnrollmentRepository;
 import com.karrini.Karrini.repository.LectureRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -44,6 +47,20 @@ public class CourseService {
             return new CourseContentDto(course, course.getLectures(), material, material.getMaterialType());
         } else {
             throw new AccessDeniedException("Learner is not enrolled in the course");
+        }
+    }
+
+    @Transactional
+    public boolean delete(Long courseId) {
+        Optional<Course> course = courseRepository.findById(courseId);
+        if (course.isEmpty()) {
+            throw new CourseNotFoundException("Course not found for unenrollment.");
+        }
+        else{
+            Course courseObj = course.get();
+            courseObj.setDeleted(true);
+            courseRepository.save(courseObj);
+            return true;
         }
     }
 }

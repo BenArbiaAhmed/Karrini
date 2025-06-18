@@ -13,4 +13,5 @@ public interface InstructorRepository extends JpaRepository<Instructor, Long> {
     List<Instructor> findTop4ByOrderByIdAsc();
     List<Instructor> findByRole(Role role);
     Instructor findById(long id);
+    Instructor findByEmail(String username);
 }

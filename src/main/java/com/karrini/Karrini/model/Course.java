@@ -1,10 +1,12 @@
 package com.karrini.Karrini.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Where(clause = "is_deleted = false")
 @Entity
 public class Course {
 
@@ -17,6 +19,9 @@ public class Course {
     @JoinColumn(name = "instructor_id")
     private User instructor;
     private String duration;
+    private boolean isDeleted = false;
+    @Enumerated(EnumType.STRING)
+    private CourseStatus courseStatus;
     private Double price;
     private Integer learnerCount = 0;
     private Integer reviewCount = 0;
@@ -40,6 +45,22 @@ public class Course {
 
     public void setLectures(List<Lecture> lectures) {
         this.lectures = lectures;
+    }
+
+    public CourseStatus getCourseStatus() {
+        return courseStatus;
+    }
+
+    public void setCourseStatus(CourseStatus courseStatus) {
+        this.courseStatus = courseStatus;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
     public Level getLevel() {

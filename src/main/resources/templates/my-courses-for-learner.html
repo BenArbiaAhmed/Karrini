@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="fragments/head.html :: head(Karrini)"></div>
+
+<body>
+<div th:replace="fragments/spinner.html :: spinner"></div>
+<div th:replace="fragments/navbar.html :: navbar"></div>
+<h3 th:if="${enrolledCourses.isEmpty()}">You haven't enrolled in any course yet.</h3>
+<div th:if="${!enrolledCourses.isEmpty()}">
+    <h3 >You are currently enrolled in the following courses.</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course, iter: ${enrolledCourses}">
+            <th scope="row" th:text="${iter.count}"></th>
+            <td>
+                <img src="/img/course-1.jpg" style="width: 100px; height: auto" alt="">
+            </td>
+            <td th:text="${course.getName()}"></td>
+            <td th:text="${course.getDescription()}"></td>
+            <td style="display: flex; flex-direction: row; justify-content: space-evenly">
+                <a th:href="@{/learn/course/{courseId}/lecture/1(courseId=${course.id})}">
+                <button type="button" class="btn btn-primary" style="border-radius: 10px">Continue Learning</button>
+                </a>
+                <button type="button" class="btn btn-danger unenroll-button" style="border-radius: 10px" th:attr="course-id=${course.id}">Unenroll</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div th:replace="fragments/footer.html :: footer"></div>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+<!-- JavaScript Libraries -->
+<script>
+    document.querySelectorAll('.unenroll-button').forEach(unenrollButton => {
+        unenrollButton.addEventListener('click', () => {
+            const courseId = unenrollButton.getAttribute('course-id');
+
+            fetch("/unenroll/" + courseId, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not OK");
+                    }
+                    console.log("Successfully unenrolled.");
+                    unenrollButton.closest('tr').remove();
+                })
+                .catch(error => {
+                    console.error('Unenrollment failed:', error);
+                    alert('Unenrollment failed. Try again.');
+                });
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/lib/wow/wow.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/waypoints/waypoints.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+</body>
+
+</html>

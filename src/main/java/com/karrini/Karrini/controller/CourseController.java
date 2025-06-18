@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("/learn")
 public class CourseController {
 
     private final CourseService courseService;
@@ -25,7 +24,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @GetMapping(value = "/course/{courseId}/lecture/{displayOrder}")
+    @GetMapping(value = "/learn/course/{courseId}/lecture/{displayOrder}")
     public String learn(@PathVariable Long courseId,
                         @PathVariable Integer displayOrder,
                         @AuthenticationPrincipal UserDetails userDetails,

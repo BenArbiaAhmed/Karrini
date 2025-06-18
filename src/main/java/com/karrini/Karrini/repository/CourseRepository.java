@@ -13,8 +13,10 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     List<Course> findByName(String name);
     Course findById(long id);
-    List<Course> findTop6ByOrderByIdAsc();
+    List<Course> findTop6ByIsDeletedFalseOrderByIdAsc();
     List<Course> findCourseByCategory_Id(Long categoryId);
     List<Course> findTop9ByOrderByLearnerCountDesc();
     Long countByCategory(Category category);
+    Long countByCategoryAndIsDeletedFalse(Category category);
+    List<Course> findTop9ByIsDeletedFalseOrderByLearnerCountDesc();
 }

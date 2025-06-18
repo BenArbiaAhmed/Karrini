@@ -1,9 +1,6 @@
 package com.karrini.Karrini.controller;
 
-import com.karrini.Karrini.exception.CourseNotFoundException;
 import com.karrini.Karrini.model.Course;
-import com.karrini.Karrini.model.Lecture;
-import com.karrini.Karrini.repository.CategoryRepository;
 import com.karrini.Karrini.repository.CourseRepository;
 import com.karrini.Karrini.service.PageDataService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,21 +9,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 public class PageController {
 
-    private final CategoryRepository categoryRepository;
-    private final CourseRepository courseRepository;
-    private PageDataService pageDataService;
 
-    public PageController(CategoryRepository categoryRepository, CourseRepository courseRepository, PageDataService pageDataService) {
-        this.categoryRepository = categoryRepository;
+    private final CourseRepository courseRepository;
+    private final PageDataService pageDataService;
+
+    public PageController(CourseRepository courseRepository, PageDataService pageDataService) {
         this.courseRepository = courseRepository;
         this.pageDataService = pageDataService;
     }
@@ -101,10 +95,19 @@ public class PageController {
     }
 
     @GetMapping("/mycourses")
-    public String mycourses(@AuthenticationPrincipal UserDetails userDetails, Model model){
+    public String mycourses(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         Map<String, List<Course>> data = pageDataService.getMyCoursesPageData(userDetails);
-        List<Course> enrolledCourses = data.get("enrolledCourses");
-        model.addAttribute("enrolledCourses", enrolledCourses);
-        return "my-courses";
+        if (data.containsKey("enrolledCourses")) {
+            List<Course> enrolledCourses = data.get("enrolledCourses");
+            model.addAttribute("enrolledCourses", enrolledCourses);
+            return "my-courses-for-learner";
+        } else if (data.containsKey("publishedCourses")) {
+            List<Course> publishedCourses = data.get("publishedCourses");
+            model.addAttribute("publishedCourses", publishedCourses);
+            return "my-courses-for-instructor";
+        }
+        else {
+            return "index";
+        }
     }
 }
