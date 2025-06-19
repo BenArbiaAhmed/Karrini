@@ -1,22 +1,23 @@
 package com.karrini.Karrini.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Where(clause = "is_deleted = false")
+
 @Entity
 public class Course {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
     @ManyToOne
     @JoinColumn(name = "instructor_id")
+    @JsonBackReference
     private User instructor;
     private String duration;
     private boolean isDeleted = false;

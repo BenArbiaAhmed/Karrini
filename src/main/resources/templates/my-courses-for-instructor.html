@@ -37,6 +37,7 @@
         </tr>
         </tbody>
     </table>
+    <a th:href="@{/courses/new}">Create a new course.</a>
 </div>
 
 
@@ -51,8 +52,8 @@
         deleteButton.addEventListener('click', () => {
             const courseId = deleteButton.getAttribute('course-id');
 
-            fetch("/delete/" + courseId, {
-                method: 'POST',
+            fetch("/courses/delete/" + courseId, {
+                method: 'DELETE',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                 }

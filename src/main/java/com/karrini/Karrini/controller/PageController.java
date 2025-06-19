@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class PageController {
@@ -83,13 +84,15 @@ public class PageController {
         return "courses-by-category";
     }
     @GetMapping("/course/{id}")
-    public String course(@PathVariable Long id, Model model){
-        if(courseRepository.findById(id).isPresent()) {
-            Course course = courseRepository.findById(id).get();
+    public String course(@PathVariable Long id, Model model) {
+        Optional<Course> courseOptional = courseRepository.findById(id);
+
+        if (courseOptional.isPresent()) {
+            Course course = courseOptional.get();
             model.addAttribute("course", course);
             model.addAttribute("starCount", course.getStarsCount());
             return "course-details";
-        }else{
+        } else {
             return "error/404";
         }
     }

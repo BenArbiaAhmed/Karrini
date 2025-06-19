@@ -1,6 +1,7 @@
 package com.karrini.Karrini.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -18,6 +19,7 @@ public class Instructor extends User{
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonManagedReference
     private List <Course> courses = new ArrayList<>();
 
     public Instructor() {
