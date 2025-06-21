@@ -23,21 +23,21 @@
         <tr th:each="course, iter: ${publishedCourses}">
             <th scope="row" th:text="${iter.count}"></th>
             <td>
-                <img src="/img/course-1.jpg" style="width: 100px; height: auto" alt="">
+                <img th:src="@{'/uploads/' + ${course.getImageUrl()}}" style="width: 100px; height: auto" alt="">
             </td>
             <td th:text="${course.getName()}"></td>
             <td th:text="${course.getDescription()}"></td>
             <td th:text="${course.getCourseStatus().name()}"></td>
             <td style="display: flex; flex-direction: row; justify-content: space-evenly">
                 <a th:href="@{/learn/course/{courseId}/lecture/1(courseId=${course.id})}">
-                    <button type="button" class="btn btn-primary" style="border-radius: 10px">Edit Course</button>
+                    <a th:href="@{'/courses/'+${course.getId()}+'/edit'}"><button type="button" class="btn btn-primary" style="border-radius: 10px">Edit Course</button></a>
                 </a>
                 <button type="button" class="btn btn-danger delete-button" style="border-radius: 10px" th:attr="course-id=${course.getId()}">Delete</button>
             </td>
         </tr>
         </tbody>
     </table>
-    <a th:href="@{/courses/new}">Create a new course.</a>
+    <a class="ms-3" th:href="@{/courses/new}"><button type="button" class="btn btn-success">Create a new course.</button></a>
 </div>
 
 

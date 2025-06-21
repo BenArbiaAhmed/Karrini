@@ -15,10 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -49,13 +45,14 @@ public class CourseCRUDController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
+        Course course = new Course();
+        model.addAttribute("course", course);
         List<Category> categoryList = categoryRepository.findAll();
         model.addAttribute("categories", categoryList);
         model.addAttribute("levels", Level.values());
         return "course-form";
     }
 
-    // Handle form submission to create a new course
     @PostMapping
     public ResponseEntity<Course> createCourse(@RequestParam("name") String name,
                                                @RequestParam("duration") String duration,
@@ -69,21 +66,32 @@ public class CourseCRUDController {
         return ResponseEntity.ok(newCourse);
     }
 
-    // Show form to edit an existing course
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new CourseNotFoundException("Course not found"));
+        List<Category> categoryList = categoryRepository.findAll();
+        model.addAttribute("categories", categoryList);
+        model.addAttribute("levels", Level.values());
         model.addAttribute("course", course);
+        model.addAttribute("isEdit", true);
         return "course-form";
     }
 
-    // Handle form submission to update the course
     @PostMapping("/{id}")
-    public String updateCourse(@PathVariable Long id, @ModelAttribute Course course) {
-        course.setId(id);
-        courseRepository.save(course);
-        return "redirect:/courses/" + id;
+    public ResponseEntity<Course> updateCourse(
+                                   @RequestParam("name") String name,
+                                   @RequestParam("duration") String duration,
+                                   @RequestParam("description") String description,
+                                   @RequestParam("category_id") Long categoryId,
+                                   @RequestParam("level") Level level,
+                                   @RequestParam("price") Double price,
+                                   @RequestParam("imageFile") MultipartFile imageFile,
+                                   @PathVariable Long id,
+                                   @AuthenticationPrincipal UserDetails userDetails) {
+        Course newCourse = courseService.saveEditedCourse(id, name, duration, description, categoryId, level, price, imageFile, userDetails);
+        return ResponseEntity.ok(newCourse);
     }
+
 
 }

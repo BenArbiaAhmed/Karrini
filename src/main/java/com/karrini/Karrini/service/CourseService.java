@@ -70,7 +70,6 @@ public class CourseService {
         }
     }
 
-    // In your CourseService class
 
     @Transactional
     public Course saveNewCourse(String name, String duration, String description, Long categoryId, Level level, Double price, MultipartFile imageFile, UserDetails userDetails) {
@@ -102,4 +101,37 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
+    public Course saveEditedCourse(Long id, String name, String duration, String description, Long categoryId, Level level, Double price, MultipartFile imageFile, UserDetails userDetails) {
+        Instructor instructor = instructorRepository.findByEmail(userDetails.getUsername());
+        if (name == null || name.isBlank() || duration == null || duration.isBlank()) {
+            throw new IllegalArgumentException("Name and duration are required.");
+        }
+        if (price == null || price < 0) {
+            throw new IllegalArgumentException("Price must be non-negative.");
+        }
+        if (imageFile.isEmpty()) {
+            throw new IllegalArgumentException("Please select a file to upload.");
+        }
+        Optional<Course> course = courseRepository.findById(id);
+        if(course.isPresent()){
+            Course courseObj = course.get();
+            courseObj.setName(name);
+            courseObj.setDuration(duration);
+            courseObj.setDescription(description);
+            courseObj.setLevel(level);
+            courseObj.setPrice(price);
+            courseObj.setCourseStatus(CourseStatus.ACCEPTED);
+            courseObj.setInstructor(instructor);
+            Category category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new CategoryNotFoundException("Category with id " + categoryId + " is not found"));
+            courseObj.setCategory(category);
+
+            String fileName = fileStorageService.storeFile(imageFile);
+            courseObj.setImageUrl(fileName);
+            return courseRepository.save(courseObj);
+        }
+        else {
+            throw new CourseNotFoundException("Course with id" + id + " was not found.");
+        }
+    }
 }

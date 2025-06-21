@@ -91,7 +91,7 @@ public class PageController {
             Course course = courseOptional.get();
             model.addAttribute("course", course);
             model.addAttribute("starCount", course.getStarsCount());
-            return "course-details";
+            return "about-course";
         } else {
             return "error/404";
         }
