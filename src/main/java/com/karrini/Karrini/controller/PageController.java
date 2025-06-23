@@ -37,7 +37,8 @@ public class PageController {
 
 
     @GetMapping("/about")
-    public String about() {
+    public String about(Model model) {
+        model.addAttribute("instructors", pageDataService.getHomePageData().get("instructors"));
         return "about";
     }
 

@@ -3,6 +3,7 @@ package com.karrini.Karrini.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +29,14 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/signup", "/css/**").permitAll()
+                        .requestMatchers("/login", "/signup", "/css/**", "/js/**", "/img/**", "/lib/**", "/scss/**").permitAll()
+                        .requestMatchers("/", "/about", "/404", "/contact", "/team", "/testimonial", "/category/**", "/course/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/courses").permitAll()
+                        .requestMatchers("/mycourses").hasAnyRole("LEARNER", "INSTRUCTOR")
+                        .requestMatchers(HttpMethod.GET, "/learn/course/**").hasRole("LEARNER")
+                        .requestMatchers("/courses/**").hasRole("INSTRUCTOR")
+                        .requestMatchers(HttpMethod.POST, "/courses").hasRole("INSTRUCTOR")
+                        .requestMatchers(HttpMethod.POST, "/enroll", "/unenroll/**").hasRole("LEARNER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

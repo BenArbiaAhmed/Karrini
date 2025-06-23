@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<div th:replace="~{fragments :: head('Error')}"></div>
+<div th:replace="~{fragments/head.html :: head('Error')}"></div>
 
 <body>
-    <div th:replace="~{fragments :: spinner}"></div>
-    <div th:replace="~{fragments :: navbar}"></div>
+    <div th:replace="~{fragments/spinner.html :: spinner}"></div>
+    <div th:replace="~{fragments/navbar.html :: navbar}"></div>
 
-    <div th:replace="~{fragments :: header('Not Found', 404)}"></div>
+    <div th:replace="~{fragments/header.html :: header('Not Found', 404)}"></div>
 
     <!-- 404 Start -->
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
@@ -24,7 +24,7 @@
     </div>
     <!-- 404 End -->
 
-    <div th:replace="~{fragments :: footer}"></div>
+    <div th:replace="~{fragments/footer.html :: footer}"></div>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
