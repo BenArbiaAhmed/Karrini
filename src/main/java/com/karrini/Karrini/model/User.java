@@ -19,6 +19,8 @@ public class User{
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToOne(mappedBy = "user")
+    private ForgotPassword forgotPassword;
 
     public Role getRole() {
         return role;

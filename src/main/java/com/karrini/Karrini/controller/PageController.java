@@ -47,6 +47,11 @@ public class PageController {
         return "error/404";
     }
 
+    @GetMapping("/forgotPassword")
+    public String forgotPassword(){
+        return "forgot-password";
+    }
+
     @GetMapping("/contact")
     public String contact() {
         return "contact";
@@ -114,4 +119,5 @@ public class PageController {
             return "index";
         }
     }
+
 }
