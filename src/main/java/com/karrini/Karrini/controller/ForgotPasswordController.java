@@ -8,6 +8,7 @@ import com.karrini.Karrini.repository.ForgotPasswordRepository;
 import com.karrini.Karrini.repository.UserRepository;
 import com.karrini.Karrini.service.EmailService;
 import com.karrini.Karrini.utils.ChangePassword;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,7 @@ public class ForgotPasswordController {
     private final ForgotPasswordRepository forgotPasswordRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ForgotPasswordController(UserRepository userRepository, EmailService emailService, ForgotPasswordRepository forgotPasswordRepository, PasswordEncoder passwordEncoder){
+    public ForgotPasswordController(UserRepository userRepository, EmailService emailService, ForgotPasswordRepository forgotPasswordRepository, @Lazy PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.forgotPasswordRepository = forgotPasswordRepository;

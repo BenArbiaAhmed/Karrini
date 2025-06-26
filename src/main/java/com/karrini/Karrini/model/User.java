@@ -1,7 +1,6 @@
 package com.karrini.Karrini.model;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -21,6 +20,9 @@ public class User{
     private Role role;
     @OneToOne(mappedBy = "user")
     private ForgotPassword forgotPassword;
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+    private String providerId;
 
     public Role getRole() {
         return role;
@@ -46,8 +48,33 @@ public class User{
         return email;
     }
 
+    public ForgotPassword getForgotPassword() {
+        return forgotPassword;
+    }
+
+    public void setForgotPassword(ForgotPassword forgotPassword) {
+        this.forgotPassword = forgotPassword;
+    }
+
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public AuthProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(AuthProvider provider) {
+        this.provider = provider;
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
     public String getPassword() {

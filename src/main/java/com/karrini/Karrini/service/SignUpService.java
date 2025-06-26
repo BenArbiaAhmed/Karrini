@@ -67,6 +67,7 @@ import com.karrini.Karrini.model.*;
 import com.karrini.Karrini.repository.InstructorRepository;
 import com.karrini.Karrini.repository.LearnerRepository;
 import com.karrini.Karrini.repository.UserRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -82,7 +83,7 @@ public class SignUpService {
     private final InstructorRepository instructorRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SignUpService(UserRepository userRepository, LearnerRepository learnerRepository, InstructorRepository instructorRepository, PasswordEncoder passwordEncoder) {
+    public SignUpService(UserRepository userRepository, LearnerRepository learnerRepository, InstructorRepository instructorRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.learnerRepository = learnerRepository;
         this.instructorRepository = instructorRepository;
