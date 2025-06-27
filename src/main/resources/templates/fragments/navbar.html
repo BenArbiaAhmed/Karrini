@@ -19,6 +19,7 @@
                 </div>
             </div>
             <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
+            <a th:href="@{/admin/dashbord}" sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item nav-link">Dashbord</a>
         </div>
         <a th:href="@{/signup}" sec:authorize="isAnonymous()" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
 

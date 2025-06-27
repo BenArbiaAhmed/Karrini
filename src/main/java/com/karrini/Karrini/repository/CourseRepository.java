@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.karrini.Karrini.model.Category;
 import com.karrini.Karrini.model.Course;
+import com.karrini.Karrini.model.CourseStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Long countByCategory(Category category);
     Long countByCategoryAndIsDeletedFalse(Category category);
     List<Course> findTop9ByIsDeletedFalseOrderByLearnerCountDesc();
+    List<Course> findByIsDeletedFalseAndCourseStatus(CourseStatus courseStatus);
 }

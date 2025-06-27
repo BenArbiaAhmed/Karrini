@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="fragments/head.html :: head(Karrini)"></div>
+
+<body>
+<div th:replace="fragments/spinner.html :: spinner"></div>
+<div th:replace="fragments/navbar.html :: navbar"></div>
+
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Image</th>
+        <th scope="col">Course Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="course, iter: ${pendingCourses}">
+        <th scope="row" th:text="${iter.count}"></th>
+        <td>
+            <img src="/img/course-1.jpg" style="width: 100px; height: auto" alt="">
+        </td>
+        <td th:text="${course.getName()}"></td>
+        <td th:text="${course.getDescription()}"></td>
+        <td class="course-status" th:text="${course.getCourseStatus()}"></td>
+        <td style="display: flex; flex-direction: row; justify-content: space-evenly">
+            <a class="accept-button me-2" th:attr="course-id=${course.getId()}">Accept</a>
+            <a class="reject-button" th:attr="course-id=${course.getId()}">Reject</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<div th:replace="fragments/footer.html :: footer"></div>
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+<script>
+    document.querySelectorAll('.accept-button').forEach(acceptButton => {
+        acceptButton.addEventListener('click', (event) => {
+            const courseId = event.target.getAttribute('course-id');
+            const parentRow = event.target.closest('tr');
+            fetch("/admin/accept/" + courseId,
+                {
+                    method: 'PATCH'
+                })
+                .then(response => {
+                    if(!response.ok){
+                        throw new Error("Network Error")
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log("Success ", data);
+                    const statusCell = parentRow.querySelector('.course-status');
+                    if (statusCell) {
+                        statusCell.textContent = 'ACCEPTED';
+                    }
+                    const acceptBtn = parentRow.querySelector('.accept-button');
+                    const rejectBtn = parentRow.querySelector('.reject-button');
+                    if(acceptBtn) acceptBtn.classList.add('disabled');
+                    if(rejectBtn) rejectBtn.classList.add('disabled');
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    alert('Could not accept the course. Please try again.');
+                })
+        })
+    })
+</script>
+
+<script>
+    document.querySelectorAll('.reject-button').forEach(rejectButton => {
+        rejectButton.addEventListener('click', (event) => {
+            const courseId = event.target.getAttribute('course-id');
+            const parentRow = event.target.closest('tr');
+            fetch("/admin/reject/" + courseId,
+                {
+                    method: 'PATCH'
+                })
+                .then(response => {
+                    if(!response.ok){
+                        throw new Error("Network Error")
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log("Success ", data);
+                    const statusCell = parentRow.querySelector('.course-status');
+                    if (statusCell) {
+                        statusCell.textContent = 'REJECTED';
+                    }
+                    const acceptBtn = parentRow.querySelector('.accept-button');
+                    const rejectBtn = parentRow.querySelector('.reject-button');
+                    if(acceptBtn) acceptBtn.classList.add('disabled');
+                    if(rejectBtn) rejectBtn.classList.add('disabled');
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    alert('Could not reject the course. Please try again.');
+                })
+        })
+    })
+</script>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/lib/wow/wow.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/waypoints/waypoints.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<script src="/js/main.js"></script>
+</body>
+
+</html>

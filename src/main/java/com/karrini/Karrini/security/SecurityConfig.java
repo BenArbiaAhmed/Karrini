@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/signup", "/css/**", "/js/**", "/img/**", "/lib/**", "/scss/**").permitAll()
                         .requestMatchers("/", "/about", "/404", "/contact", "/team", "/testimonial", "/category/**", "/course/**", "/forgotPassword/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/courses").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/admin/**").hasRole("ADMIN")
                         .requestMatchers("/mycourses").hasAnyRole("LEARNER", "INSTRUCTOR")
                         .requestMatchers(HttpMethod.GET, "/learn/course/**").hasRole("LEARNER")
                         .requestMatchers("/courses/**").hasRole("INSTRUCTOR")

@@ -1,6 +1,7 @@
 package com.karrini.Karrini.controller;
 
 import com.karrini.Karrini.model.Course;
+import com.karrini.Karrini.model.CourseStatus;
 import com.karrini.Karrini.repository.CourseRepository;
 import com.karrini.Karrini.service.PageDataService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -118,6 +119,13 @@ public class PageController {
         else {
             return "index";
         }
+    }
+
+    @GetMapping("/admin/dashbord")
+    public String dashboard(Model model){
+        List<Course> pendingCourses = courseRepository.findByIsDeletedFalseAndCourseStatus(CourseStatus.PENDING);
+        model.addAttribute("pendingCourses", pendingCourses);
+        return "admin-dashbord";
     }
 
 }

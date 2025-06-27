@@ -90,7 +90,7 @@ public class CourseService {
         course.setDescription(description);
         course.setLevel(level);
         course.setPrice(price);
-        course.setCourseStatus(CourseStatus.ACCEPTED);
+        course.setCourseStatus(CourseStatus.PENDING);
         course.setInstructor(instructor);
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException("Category with id " + categoryId + " is not found"));
