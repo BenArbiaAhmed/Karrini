@@ -24,7 +24,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @GetMapping(value = "/learn/course/{courseId}/lecture/{displayOrder}")
+        @GetMapping(value = "/learn/course/{courseId}/lecture/{displayOrder}")
     public String learn(@PathVariable Long courseId,
                         @PathVariable Integer displayOrder,
                         @AuthenticationPrincipal UserDetails userDetails,

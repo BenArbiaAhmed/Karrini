@@ -1,9 +1,12 @@
 package com.karrini.Karrini.controller;
 
+import com.karrini.Karrini.dto.LectureDto;
 import com.karrini.Karrini.model.Course;
 import com.karrini.Karrini.model.CourseStatus;
+import com.karrini.Karrini.model.TextMaterial;
 import com.karrini.Karrini.repository.CourseRepository;
 import com.karrini.Karrini.service.PageDataService;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -128,4 +131,13 @@ public class PageController {
         return "admin-dashbord";
     }
 
+    @GetMapping("/newlecture/course/{courseId}")
+    public String newMaterial(@PathVariable Long courseId, Model model, @AuthenticationPrincipal UserDetails userDetails){
+        Course course = courseRepository.findCourseByIdAndInstructor_Email(courseId, userDetails.getUsername())
+                .orElseThrow(() -> new AccessDeniedException("Access denied. You are not the owner of this course or the course does not exist."));
+        LectureDto lectureDto = new LectureDto();
+        model.addAttribute("courseId", courseId);
+        model.addAttribute("lectureDto", lectureDto);
+        return "learning-material-form";
+    }
 }

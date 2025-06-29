@@ -56,7 +56,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/admin/**").hasRole("ADMIN")
                         .requestMatchers("/mycourses").hasAnyRole("LEARNER", "INSTRUCTOR")
                         .requestMatchers(HttpMethod.GET, "/learn/course/**").hasRole("LEARNER")
-                        .requestMatchers("/courses/**").hasRole("INSTRUCTOR")
+                        .requestMatchers("/courses/**", "addlecture/course/*", "newlecture/course/*").hasRole("INSTRUCTOR")
                         .requestMatchers(HttpMethod.POST, "/courses").hasRole("INSTRUCTOR")
                         .requestMatchers(HttpMethod.POST, "/enroll", "/unenroll/**").hasRole("LEARNER")
                         .anyRequest().authenticated()

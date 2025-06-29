@@ -17,4 +17,5 @@ public class TextMaterial extends LearningMaterial{
     public void setContent(String content) {
         this.content = content;
     }
+
 }
