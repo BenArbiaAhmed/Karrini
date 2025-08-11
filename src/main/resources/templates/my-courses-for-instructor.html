@@ -29,16 +29,15 @@
             <td th:text="${course.getDescription()}"></td>
             <td th:text="${course.getCourseStatus().name()}"></td>
             <td style="display: flex; flex-direction: row; justify-content: space-evenly">
-                <a th:href="@{/learn/course/{courseId}/lecture/1(courseId=${course.id})}">
-                    <a th:href="@{'/courses/'+${course.getId()}+'/edit'}"><button type="button" class="btn btn-primary" style="border-radius: 10px">Edit Course</button></a>
-                </a>
+                <a th:href="@{'/courses/'+${course.getId()}+'/edit'}"><button type="button" class="btn btn-primary" style="border-radius: 10px">Edit Course</button></a>
+                <a th:href="@{/newlecture/course/{courseId}(courseId=${course.id})}"><button type="button" class="btn btn-secondary" style="border-radius: 10px">Add Lecture</button></a>
                 <button type="button" class="btn btn-danger delete-button" style="border-radius: 10px" th:attr="course-id=${course.getId()}">Delete</button>
             </td>
         </tr>
         </tbody>
     </table>
-    <a class="ms-3" th:href="@{/courses/new}"><button type="button" class="btn btn-success">Create a new course.</button></a>
 </div>
+<a class="ms-3" th:href="@{/courses/new}"><button type="button" class="btn btn-success">Create a new course.</button></a>
 
 
 <div th:replace="fragments/footer.html :: footer"></div>
