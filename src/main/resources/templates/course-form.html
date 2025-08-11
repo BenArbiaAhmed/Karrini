@@ -99,7 +99,7 @@
                 if (response.ok) {
                     const result = await response.json();
                     alert('Course created successfully!');
-                    window.location.href = 'http://localhost:8080/mycourses';
+                    window.location.href = 'https://karrini.onrender.com/mycourses';
                 } else {
                     const error = await response.json();
                     alert('Error creating course: ' + (error.message || response.statusText));
@@ -131,7 +131,7 @@
             if (response.ok) {
                 const result = await response.json();
                 alert('Course edited successfully! Course ID: ' + result.id);
-                window.location.href = 'http://localhost:8080/mycourses';
+                window.location.href = 'https://karrini.onrender.com/mycourses';
             } else {
                 const error = await response.json();
                 alert('Error editing course: ' + (error.message || response.statusText));
